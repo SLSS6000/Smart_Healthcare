@@ -1,0 +1,108 @@
+<view class="container">
+  <view wx:if="{{loading}}" class="loading">
+    <text class="loading-icon">⏳</text>
+    <text class="loading-text">加载中...</text>
+  </view>
+  
+  <view wx:elif="{{error}}" class="error">
+    <text class="error-icon">❌</text>
+    <text class="error-text">{{error}}</text>
+  </view>
+  
+  <view wx:else>
+    <view class="header">
+      <view class="greeting">
+        <text class="greeting-text">{{greetingText}}，{{userName}}</text>
+        <text class="greeting-sub">今天也要保持健康哦！</text>
+      </view>
+      <view class="avatar">
+        <image src="/images/avatar.png" class="avatar-img"></image>
+      </view>
+    </view>
+
+    <view class="health-card card">
+      <view class="health-header">
+        <view class="health-title-group">
+          <text class="card-title">今日健康概览</text>
+          <view class="health-score">
+            <text class="score-label">健康指数</text>
+            <text class="score-value">{{healthScore}}</text>
+            <text class="score-level">{{healthLevel}}</text>
+          </view>
+        </view>
+        <view class="header-right">
+          <text class="update-time">更新于 {{updateTime}}</text>
+          <view class="refresh-btn" bindtap="refreshData">
+            <text class="refresh-icon">🔄</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="health-data">
+        <view class="data-item {{item.status}}" wx:for="{{healthData}}" wx:key="key" bindtap="goToHealthDetail" data-key="{{item.key}}">
+          <view class="data-header">
+            <view class="data-icon" style="background: {{item.bgColor}}">
+              <text>{{item.icon}}</text>
+            </view>
+            <view class="data-badge {{item.trend}}">
+              <text class="trend-icon">{{item.trend === 'up' ? '↑' : item.trend === 'down' ? '↓' : '→'}}</text>
+              <text class="trend-text">{{item.trendText}}</text>
+            </view>
+          </view>
+          
+          <view class="data-info">
+            <text class="data-value">{{item.value}}</text>
+            <text class="data-label">{{item.label}}</text>
+          </view>
+          
+          <view class="progress-container" wx:if="{{item.progress < 100}}">
+            <view class="progress-bar">
+              <view class="progress-fill {{item.status}}" style="width: {{item.progress}}%"></view>
+            </view>
+            <text class="progress-text">{{item.progress}}%</text>
+          </view>
+          
+          <view class="target-info" wx:if="{{item.target}}">
+            <text class="target-text">{{item.target}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="health-tips">
+        <view class="tip-item">
+          <text class="tip-icon">💡</text>
+          <text class="tip-text">建议：今日步数还未达标，饭后散步20分钟可以帮助消化哦！</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="quick-actions card">
+      <view class="card-title">快捷入口</view>
+      <view class="actions-grid">
+        <view class="action-item {{item.isHighlight ? 'highlight' : ''}}" 
+              wx:for="{{quickActions}}" 
+              wx:key="id" 
+              bindtap="goToPage" 
+              data-url="{{item.url}}"
+              data-name="{{item.name}}">
+          <view class="action-icon" style="background: {{item.bgColor}}">
+            <text>{{item.icon}}</text>
+          </view>
+          <text class="action-label">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="news-preview card">
+      <view class="card-title">健康资讯</view>
+      <view class="news-item" wx:for="{{newsList}}" wx:key="id" bindtap="goToNewsDetail" data-id="{{item.id}}">
+        <image src="{{item.image}}" class="news-image"></image>
+        <view class="news-info">
+          <text class="news-title">{{item.title}}</text>
+          <text class="news-desc">{{item.desc}}</text>
+          <text class="news-time">{{item.time}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

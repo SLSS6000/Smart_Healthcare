@@ -1,0 +1,382 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "123456",
+      "nickname": "管理员",
+      "avatar": "/images/doctor1.png",
+      "created_at": "2026/5/6 12:48:40"
+    }
+  ],
+  "health_records": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "type": "血压",
+      "value": "120/80",
+      "unit": "mmHg",
+      "record_time": "2024-05-05 08:00",
+      "normal": true
+    },
+    {
+      "id": 2,
+      "user_id": 1,
+      "type": "血糖",
+      "value": "5.6",
+      "unit": "mmol/L",
+      "record_time": "2024-05-05 07:30",
+      "normal": true
+    },
+    {
+      "id": 3,
+      "user_id": 1,
+      "type": "体重",
+      "value": "68.5",
+      "unit": "kg",
+      "record_time": "2024-05-05 07:20",
+      "normal": true
+    },
+    {
+      "id": 4,
+      "user_id": 1,
+      "type": "血压",
+      "value": "125/82",
+      "unit": "mmHg",
+      "record_time": "2024-05-04 08:10",
+      "normal": true
+    },
+    {
+      "id": 5,
+      "user_id": 1,
+      "type": "血糖",
+      "value": "5.8",
+      "unit": "mmol/L",
+      "record_time": "2024-05-04 07:40",
+      "normal": true
+    },
+    {
+      "id": 6,
+      "user_id": 1,
+      "type": "血压",
+      "value": "118/78",
+      "unit": "mmHg",
+      "record_time": "2024-05-03 07:55",
+      "normal": true
+    },
+    {
+      "id": 7,
+      "user_id": 1,
+      "type": "体重",
+      "value": "68.8",
+      "unit": "kg",
+      "record_time": "2024-05-03 07:30",
+      "normal": true
+    },
+    {
+      "id": 8,
+      "user_id": 1,
+      "type": "血压",
+      "value": "122/81",
+      "unit": "mmHg",
+      "record_time": "2024-05-02 08:00",
+      "normal": true
+    },
+    {
+      "id": 9,
+      "user_id": 1,
+      "type": "血糖",
+      "value": "5.7",
+      "unit": "mmol/L",
+      "record_time": "2024-05-02 07:35",
+      "normal": true
+    },
+    {
+      "id": 10,
+      "user_id": 1,
+      "type": "血压",
+      "value": "124/83",
+      "unit": "mmHg",
+      "record_time": "2024-05-01 08:15",
+      "normal": true
+    },
+    {
+      "id": 11,
+      "user_id": 1,
+      "type": "体重",
+      "value": "68.3",
+      "unit": "kg",
+      "record_time": "2026/5/6 12:53:47"
+    },
+    {
+      "id": 12,
+      "user_id": 1,
+      "type": "体温",
+      "value": "36.8",
+      "unit": "°C",
+      "record_time": "2026/5/6 19:30:47"
+    },
+    {
+      "id": 13,
+      "user_id": 1,
+      "type": "体重",
+      "value": "40",
+      "unit": "kg",
+      "record_time": "2026/5/7 09:05:31",
+      "normal": true
+    }
+  ],
+  "appointments": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "doctor_id": 1,
+      "date": "2026-06-20",
+      "time": "08:30",
+      "status": "pending",
+      "created_at": "2026/6/18 15:32:18"
+    }
+  ],
+  "news": [
+    {
+      "id": 1,
+      "title": "春季养生：如何预防过敏性鼻炎",
+      "desc": "春季是过敏高发季节，花粉、粉尘等过敏原增多，容易引起过敏性鼻炎。建议外出时佩戴口罩，保持室内空气清新，适当使用加湿器。",
+      "category": "养生",
+      "time": "2024-03-15 10:30",
+      "views": 3203,
+      "likes": 528,
+      "image": "/images/news1.jpg"
+    },
+    {
+      "id": 2,
+      "title": "高血压患者的饮食指南",
+      "desc": "合理的饮食控制对血压管理至关重要。高血压患者应减少钠盐摄入，每日盐量不超过6克；增加钾的摄入，多吃新鲜蔬菜水果；限制脂肪摄入，戒烟限酒。",
+      "category": "科普",
+      "time": "2024-03-14 15:20",
+      "views": 5101,
+      "likes": 892,
+      "image": "/images/news2.jpg"
+    },
+    {
+      "id": 3,
+      "title": "每天走多少步最健康",
+      "desc": "走路是最简单有效的运动方式。研究表明，每天步行6000-8000步可以有效降低心血管疾病风险。建议根据个人体质循序渐进，避免过度运动。",
+      "category": "推荐",
+      "time": "2024-03-13 09:15",
+      "views": 8600,
+      "likes": 1200,
+      "image": "/images/news3.jpg"
+    },
+    {
+      "id": 4,
+      "title": "睡眠不足的危害与改善方法",
+      "desc": "长期睡眠不足会导致免疫力下降、记忆力减退、情绪波动等问题。建议保持规律的作息时间，每晚保证7-8小时的睡眠时间。",
+      "category": "养生",
+      "time": "2024-03-12 20:00",
+      "views": 4500,
+      "likes": 650,
+      "image": "/images/news4.jpg"
+    },
+    {
+      "id": 5,
+      "title": "糖尿病患者如何科学饮食",
+      "desc": "糖尿病患者的饮食管理是控制血糖的关键。应选择低GI食物，定时定量进餐，适量摄入膳食纤维，避免血糖剧烈波动。",
+      "category": "科普",
+      "time": "2024-03-11 14:30",
+      "views": 6200,
+      "likes": 780,
+      "image": "/images/news5.jpg"
+    },
+    {
+      "id": 6,
+      "title": "儿童疫苗接种全攻略",
+      "desc": "疫苗接种是预防传染病最有效的方式。根据国家免疫规划，儿童在不同的年龄段需要接种相应的疫苗，家长应按时带孩子进行接种。",
+      "category": "科普",
+      "time": "2024-03-10 11:00",
+      "views": 3900,
+      "likes": 420,
+      "image": "/images/news6.jpg"
+    }
+  ],
+  "doctors": [
+    {
+      "id": 1,
+      "name": "张建国",
+      "title": "主任医师",
+      "department": "心内科",
+      "hospital": "市第一人民医院",
+      "rating": 4.9,
+      "tags": [
+        "高血压",
+        "冠心病",
+        "心律失常"
+      ],
+      "experience": "25年",
+      "consultCount": 12580,
+      "avatar": "/images/doctor1.png"
+    },
+    {
+      "id": 2,
+      "name": "李秀华",
+      "title": "副主任医师",
+      "department": "内分泌科",
+      "hospital": "市第一人民医院",
+      "rating": 4.8,
+      "tags": [
+        "糖尿病",
+        "甲状腺疾病",
+        "骨质疏松"
+      ],
+      "experience": "18年",
+      "consultCount": 8920,
+      "avatar": "/images/doctor2.png"
+    },
+    {
+      "id": 3,
+      "name": "王志强",
+      "title": "主治医师",
+      "department": "消化内科",
+      "hospital": "市第二人民医院",
+      "rating": 4.7,
+      "tags": [
+        "胃炎",
+        "胃溃疡",
+        "肠道疾病"
+      ],
+      "experience": "12年",
+      "consultCount": 6350,
+      "avatar": "/images/doctor3.png"
+    },
+    {
+      "id": 4,
+      "name": "陈美玲",
+      "title": "主任医师",
+      "department": "妇产科",
+      "hospital": "市妇幼保健院",
+      "rating": 4.9,
+      "tags": [
+        "孕期保健",
+        "妇科炎症",
+        "产后康复"
+      ],
+      "experience": "20年",
+      "consultCount": 15680,
+      "avatar": "/images/doctor4.png"
+    },
+    {
+      "id": 5,
+      "name": "刘建华",
+      "title": "副主任医师",
+      "department": "儿科",
+      "hospital": "市儿童医院",
+      "rating": 4.8,
+      "tags": [
+        "小儿感冒",
+        "发育评估",
+        "儿童营养"
+      ],
+      "experience": "15年",
+      "consultCount": 9870,
+      "avatar": "/images/doctor5.png"
+    },
+    {
+      "id": 6,
+      "name": "赵明远",
+      "title": "主任医师",
+      "department": "神经内科",
+      "hospital": "市第一人民医院",
+      "rating": 4.7,
+      "tags": [
+        "头痛",
+        "失眠",
+        "脑血管疾病"
+      ],
+      "experience": "22年",
+      "consultCount": 7420,
+      "avatar": "/images/doctor6.png"
+    },
+    {
+      "id": 7,
+      "name": "孙晓芳",
+      "title": "主治医师",
+      "department": "皮肤科",
+      "hospital": "市第三人民医院",
+      "rating": 4.6,
+      "tags": [
+        "湿疹",
+        "痤疮",
+        "皮肤过敏"
+      ],
+      "experience": "10年",
+      "consultCount": 5180,
+      "avatar": "/images/doctor7.png"
+    },
+    {
+      "id": 8,
+      "name": "周伟强",
+      "title": "副主任医师",
+      "department": "骨科",
+      "hospital": "市骨科医院",
+      "rating": 4.8,
+      "tags": [
+        "颈椎病",
+        "腰椎间盘突出",
+        "关节疾病"
+      ],
+      "experience": "16年",
+      "consultCount": 8230,
+      "avatar": "/images/doctor8.png"
+    }
+  ],
+  "departments": [
+    {
+      "id": 1,
+      "name": "心内科",
+      "icon": "❤️",
+      "count": 15
+    },
+    {
+      "id": 2,
+      "name": "内分泌科",
+      "icon": "🧪",
+      "count": 12
+    },
+    {
+      "id": 3,
+      "name": "消化内科",
+      "icon": "🌿",
+      "count": 10
+    },
+    {
+      "id": 4,
+      "name": "妇产科",
+      "icon": "👶",
+      "count": 20
+    },
+    {
+      "id": 5,
+      "name": "儿科",
+      "icon": "👧",
+      "count": 25
+    },
+    {
+      "id": 6,
+      "name": "神经内科",
+      "icon": "🧠",
+      "count": 8
+    },
+    {
+      "id": 7,
+      "name": "皮肤科",
+      "icon": "💆",
+      "count": 14
+    },
+    {
+      "id": 8,
+      "name": "骨科",
+      "icon": "🦴",
+      "count": 18
+    }
+  ]
+}

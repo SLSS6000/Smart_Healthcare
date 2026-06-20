@@ -1,0 +1,243 @@
+<view class="container">
+  <view wx:if="{{loading}}" class="loading">
+    <text class="loading-icon">...</text>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="error">
+    <text class="error-icon">!</text>
+    <text class="error-text">{{error}}</text>
+  </view>
+
+  <view wx:else class="health-page">
+    <view class="summary-card">
+      <view class="summary-top">
+        <view>
+          <text class="summary-label">健康管理</text>
+          <text class="summary-title">今日健康概览</text>
+        </view>
+        <view class="summary-action" bindtap="addRecord">添加</view>
+      </view>
+      <view class="summary-grid">
+        <view class="summary-item" wx:for="{{latestCards}}" wx:key="type">
+          <view class="summary-icon" style="background: {{item.bgColor}}">{{item.icon}}</view>
+          <text class="summary-name">{{item.type}}</text>
+          <text class="summary-value">{{item.value}} <text class="summary-unit">{{item.unit}}</text></text>
+          <text class="summary-time">{{item.time}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="tabs">
+      <view class="tab-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-index="0">记录</view>
+      <view class="tab-item {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-index="1">趋势</view>
+      <view class="tab-item {{currentTab === 2 ? 'active' : ''}}" bindtap="switchTab" data-index="2">档案</view>
+    </view>
+
+    <view wx:if="{{currentTab === 0}}" class="tab-content">
+      <view class="card">
+        <view class="card-header">
+          <text class="card-title">今日记录</text>
+          <text class="card-more">{{todayRecords.length}} 条</text>
+        </view>
+        <view wx:if="{{todayRecords.length > 0}}">
+          <view class="record-swipe" wx:for="{{todayRecords}}" wx:key="id">
+            <view class="record-delete-action {{activeDeleteId === item.id ? 'show' : ''}}" catchtap="deleteRecord" data-id="{{item.id}}">删除</view>
+            <view
+              class="record-item {{activeDeleteId === item.id ? 'swiped' : ''}}"
+              bindtouchstart="onRecordTouchStart"
+              bindtouchmove="onRecordTouchMove"
+              bindtouchend="onRecordTouchEnd"
+              data-id="{{item.id}}"
+            >
+              <view class="record-icon" style="background: {{item.bgColor}}">{{item.icon}}</view>
+              <view class="record-info">
+                <text class="record-type">{{item.type}}</text>
+                <text class="record-time">{{item.timeText}}</text>
+              </view>
+              <view class="record-right">
+                <text class="record-value">{{item.valueText}}</text>
+                <text class="record-status {{item.normal ? 'normal' : 'warning'}}">{{item.statusText}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view wx:else class="empty-state">
+          <text class="empty-title">今天还没有记录</text>
+          <text class="empty-desc">添加血压、血糖、体重等指标后会显示在这里</text>
+        </view>
+      </view>
+
+      <view class="card">
+        <view class="card-header">
+          <text class="card-title">历史记录</text>
+          <text class="card-more">{{records.length}} 条总记录</text>
+        </view>
+        <view wx:if="{{historyRecords.length > 0}}">
+          <view class="history-group" wx:for="{{historyRecords}}" wx:key="date">
+            <view class="history-date">{{item.date}}</view>
+            <view class="history-item" wx:for="{{item.records}}" wx:for-item="record" wx:key="id">
+              <view class="record-icon-small" style="background: {{record.bgColor}}">{{record.icon}}</view>
+              <view class="record-info-small">
+                <text class="record-type">{{record.type}}</text>
+                <text class="record-value-small">{{record.valueText}}</text>
+              </view>
+              <text class="record-time-small">{{record.timeText}}</text>
+            </view>
+          </view>
+        </view>
+        <view wx:else class="empty-state">
+          <text class="empty-title">暂无历史记录</text>
+          <text class="empty-desc">持续记录后会形成健康时间线</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{currentTab === 1}}" class="tab-content">
+      <view class="card">
+        <view class="card-header">
+          <text class="card-title">趋势分析</text>
+          <view class="chart-period">
+            <text class="{{chartPeriod === 'week' ? 'active' : ''}}" bindtap="changePeriod" data-period="week">周</text>
+            <text class="{{chartPeriod === 'month' ? 'active' : ''}}" bindtap="changePeriod" data-period="month">月</text>
+            <text class="{{chartPeriod === 'year' ? 'active' : ''}}" bindtap="changePeriod" data-period="year">年</text>
+          </view>
+        </view>
+        <view class="metric-tabs">
+          <view class="metric-tab {{selectedMetric === item.type ? 'active' : ''}}" wx:for="{{typeOptions}}" wx:key="type" bindtap="selectMetric" data-type="{{item.type}}">
+            {{item.type}}
+          </view>
+        </view>
+        <view class="trend-summary">
+          <view>
+            <text class="trend-label">最近值</text>
+            <text class="trend-value">{{trendSummary.latest}}</text>
+          </view>
+          <view>
+            <text class="trend-label">样本数</text>
+            <text class="trend-value">{{trendSummary.count || 0}}</text>
+          </view>
+          <view>
+            <text class="trend-label">范围</text>
+            <text class="trend-value">{{trendSummary.range}}</text>
+          </view>
+        </view>
+        <view wx:if="{{trendBars.length > 0}}" class="bar-chart">
+          <view class="bar-item" wx:for="{{trendBars}}" wx:key="id">
+            <view class="bar-track">
+              <view class="bar-fill {{item.normal ? '' : 'warning'}}" style="height: {{item.height}}"></view>
+            </view>
+            <text class="bar-label">{{item.label}}</text>
+          </view>
+        </view>
+        <view wx:else class="empty-state">
+          <text class="empty-title">暂无趋势数据</text>
+          <text class="empty-desc">至少添加一条{{selectedMetric}}记录后生成趋势</text>
+        </view>
+      </view>
+
+      <view class="card">
+        <view class="card-header">
+          <text class="card-title">健康指标</text>
+          <text class="card-more">自动计算</text>
+        </view>
+        <view class="metric-item" wx:for="{{metrics}}" wx:key="id">
+          <view class="metric-info">
+            <text class="metric-name">{{item.name}}</text>
+            <text class="metric-desc">{{item.desc}}</text>
+          </view>
+          <view class="metric-value">
+            <text class="value-number">{{item.value}}</text>
+            <text class="value-unit">{{item.unit}}</text>
+          </view>
+          <text class="metric-status {{item.status === '正常' ? 'normal' : 'warning'}}">{{item.status}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{currentTab === 2}}" class="tab-content">
+      <view class="card">
+        <view class="card-header">
+          <text class="card-title">基本信息</text>
+          <text class="card-more">示例档案</text>
+        </view>
+        <view class="profile-grid">
+          <view class="info-item">
+            <text class="info-label">姓名</text>
+            <text class="info-value">李女士</text>
+          </view>
+          <view class="info-item">
+            <text class="info-label">性别</text>
+            <text class="info-value">女</text>
+          </view>
+          <view class="info-item">
+            <text class="info-label">年龄</text>
+            <text class="info-value">35 岁</text>
+          </view>
+          <view class="info-item">
+            <text class="info-label">血型</text>
+            <text class="info-value">A 型</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="card">
+        <view class="card-header">
+          <text class="card-title">健康标签</text>
+          <text class="card-more">重点关注</text>
+        </view>
+        <view class="tag-list">
+          <view class="health-tag">高血压家族史</view>
+          <view class="health-tag">过敏性鼻炎</view>
+          <view class="health-tag">建议规律运动</view>
+        </view>
+      </view>
+
+      <view class="card">
+        <view class="card-header">
+          <text class="card-title">体检报告</text>
+          <text class="card-more">{{reports.length}} 份</text>
+        </view>
+        <view class="report-item" wx:for="{{reports}}" wx:key="id" bindtap="viewReport" data-id="{{item.id}}">
+          <view class="report-icon">PDF</view>
+          <view class="report-info">
+            <text class="report-name">{{item.name}}</text>
+            <text class="report-date">{{item.date}}</text>
+          </view>
+          <text class="report-status">{{item.status}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{showAddModal}}" class="modal-overlay" bindtap="cancelAddRecord">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">添加健康记录</text>
+        <text class="modal-close" bindtap="cancelAddRecord">×</text>
+      </view>
+      <view class="modal-body">
+        <view class="form-group">
+          <text class="form-label">记录类型</text>
+          <view class="type-grid">
+            <view class="type-item {{selectedType === item.type ? 'active' : ''}}" wx:for="{{typeOptions}}" wx:key="type" bindtap="selectRecordType" data-type="{{item.type}}">
+              <text class="type-icon">{{item.icon}}</text>
+              <text class="type-name">{{item.type}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="form-group">
+          <text class="form-label">记录数值</text>
+          <view class="input-group">
+            <input type="text" placeholder="{{inputHint}}" value="{{inputValue}}" bindinput="onInputChange" class="form-input" />
+            <text class="input-unit">{{inputUnit}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <view class="btn btn-cancel" bindtap="cancelAddRecord">取消</view>
+        <view class="btn btn-confirm" bindtap="confirmAddRecord">保存</view>
+      </view>
+    </view>
+  </view>
+</view>

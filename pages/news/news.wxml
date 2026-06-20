@@ -1,0 +1,48 @@
+<view class="container">
+  <view wx:if="{{loading}}" class="loading">
+    <text class="loading-icon">⏳</text>
+    <text class="loading-text">加载中...</text>
+  </view>
+  
+  <view wx:elif="{{error}}" class="error">
+    <text class="error-icon">❌</text>
+    <text class="error-text">{{error}}</text>
+  </view>
+  
+  <view wx:else>
+    <view class="tabs">
+      <view 
+        wx:for="{{categories}}" 
+        wx:key="*this"
+        class="tab-item {{currentTab === index ? 'active' : ''}}" 
+        bindtap="switchTab" 
+        data-index="{{index}}"
+      >
+        <text>{{item}}</text>
+      </view>
+    </view>
+
+    <view class="news-list">
+      <view class="news-card card" wx:for="{{newsList}}" wx:key="id" bindtap="goToDetail" data-id="{{item.id}}">
+        <view class="news-card-header">
+          <text class="news-category" style="background: {{item.categoryBg}}; color: {{item.categoryColor}}">{{item.category}}</text>
+          <text class="news-time">{{item.time}}</text>
+        </view>
+        <view class="news-card-content">
+          <view class="news-card-info">
+            <text class="news-card-title">{{item.title}}</text>
+            <text class="news-card-desc">{{item.desc}}</text>
+            <view class="news-card-footer">
+              <text class="news-author">{{item.author}}</text>
+              <view class="news-stats">
+                <text class="stat-item">👁️ {{item.views}}</text>
+                <text class="stat-item">❤️ {{item.likes}}</text>
+              </view>
+            </view>
+          </view>
+          <image src="{{item.image}}" class="news-card-image" mode="aspectFill"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

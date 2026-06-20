@@ -1,0 +1,143 @@
+<view class="container">
+  <!-- 顶部标签页 -->
+  <view class="tabs">
+    <view class="tab {{activeTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-tab="0">
+      <text>预约挂号</text>
+      <view class="tab-line" wx:if="{{activeTab === 0}}"></view>
+    </view>
+    <view class="tab {{activeTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-tab="1">
+      <text>我的预约</text>
+      <view class="tab-line" wx:if="{{activeTab === 1}}"></view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">
+    <text class="loading-icon">⏳</text>
+    <text class="loading-text">加载中...</text>
+  </view>
+  
+  <view wx:elif="{{error}}" class="error">
+    <text class="error-icon">❌</text>
+    <text class="error-text">{{error}}</text>
+    <button class="retry-btn" bindtap="loadData">重新加载</button>
+  </view>
+  
+  <view wx:else class="content-area">
+    <!-- 预约挂号 Tab -->
+    <view wx:if="{{activeTab === 0}}" class="booking-tab anim-fade-in">
+      <view class="search-box card">
+        <view class="search-input">
+          <text class="search-icon">🔍</text>
+          <input 
+            placeholder="搜索医生、科室或医院" 
+            placeholder-class="search-placeholder" 
+            value="{{searchKeyword}}"
+            bindinput="onSearchInput"
+          />
+        </view>
+      </view>
+
+      <view class="dept-card card">
+        <view class="card-title">热门科室</view>
+        <view class="dept-grid">
+          <view class="dept-item" wx:for="{{departments}}" wx:key="id" bindtap="selectDept" data-id="{{item.id}}" data-name="{{item.name}}">
+            <view class="dept-icon" style="background: {{item.bgColor}}">
+              <image 
+                wx:if="{{!item.showEmoji}}" 
+                src="{{item.localImage}}" 
+                class="dept-img" 
+                mode="aspectFill"
+                binderror="onDeptImageError"
+                bindload="onDeptImageLoad"
+                data-index="{{index}}"
+              />
+              <text wx:else class="dept-emoji">{{item.icon}}</text>
+            </view>
+            <text class="dept-name">{{item.name}}</text>
+            <text class="dept-count">{{item.count}}位医生</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="card doctor-card-container">
+        <view class="card-title">推荐医生</view>
+        <view wx:if="{{doctors.length > 0}}" class="doctor-list">
+          <view class="doctor-item" wx:for="{{doctors}}" wx:key="id" bindtap="goToDoctorDetail" data-id="{{item.id}}">
+            <view class="doctor-avatar">
+              <image src="{{item.avatar}}" class="avatar-img" mode="aspectFill"></image>
+            </view>
+            <view class="doctor-info">
+              <view class="doctor-header">
+                <text class="doctor-name">{{item.name}}</text>
+                <text class="doctor-title">{{item.title}}</text>
+              </view>
+              <text class="doctor-dept">{{item.department}}</text>
+              <text class="doctor-hospital">{{item.hospital}}</text>
+              <view class="doctor-tags">
+                <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+              </view>
+            </view>
+            <view class="doctor-rating">
+              <text class="rating-score">{{item.rating}}</text>
+              <text class="rating-count">{{item.reviewCount}}评价</text>
+            </view>
+          </view>
+        </view>
+        <view wx:else class="empty-state">
+          <text class="empty-icon">🔍</text>
+          <text class="empty-text">未找到相关医生</text>
+          <text class="empty-hint">尝试其他关键词或选择科室</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 我的预约 Tab -->
+    <view wx:if="{{activeTab === 1}}" class="my-appointments-tab anim-fade-in">
+      <view wx:if="{{myAppointments.length > 0}}" class="appt-list">
+        <view class="appt-card card" wx:for="{{myAppointments}}" wx:key="id">
+          <view class="appt-header">
+            <view class="appt-doctor-brief">
+              <image src="{{item.avatar}}" class="appt-avatar"></image>
+              <view class="appt-name-box">
+                <text class="appt-doctor-name">{{item.doctor}}</text>
+                <text class="appt-doctor-title">{{item.title}}</text>
+              </view>
+            </view>
+            <view class="appt-status-tag" style="background: {{item.statusColor}}15; color: {{item.statusColor}}">
+              {{item.statusText}}
+            </view>
+          </view>
+          
+          <view class="appt-body">
+            <view class="appt-detail-row">
+              <text class="appt-label">就诊科室</text>
+              <text class="appt-value">{{item.department}}</text>
+            </view>
+            <view class="appt-detail-row">
+              <text class="appt-label">就诊医院</text>
+              <text class="appt-value">{{item.hospital || '市第一人民医院'}}</text>
+            </view>
+            <view class="appt-detail-row">
+              <text class="appt-label">预约时间</text>
+              <text class="appt-value highlight">{{item.date}} {{item.time}}</text>
+            </view>
+          </view>
+
+          <view class="appt-footer">
+            <view class="appt-btns">
+              <button class="btn-outline" bindtap="cancelAppointment" data-id="{{item.id}}" wx:if="{{item.status === 'pending'}}">取消预约</button>
+              <button class="btn-primary" bindtap="viewAppointmentDetail" data-id="{{item.id}}">查看详情</button>
+            </view>
+          </view>
+        </view>
+      </view>
+      
+      <view wx:else class="empty-state">
+        <view class="empty-illustration">📅</view>
+        <text class="empty-text">暂无预约记录</text>
+        <text class="empty-hint">您还没有任何挂号预约，点击“预约挂号”开始</text>
+        <button class="go-booking-btn" bindtap="switchTab" data-tab="0">去挂号</button>
+      </view>
+    </view>
+  </view>
+</view>

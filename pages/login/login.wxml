@@ -1,0 +1,66 @@
+<view class="container">
+  <view class="login-header">
+    <view class="logo">
+      <view class="logo-icon"><image src="/images/logo.png" class="logo-img"></image></view>
+      <view class="logo-ring"></view>
+      <view class="logo-ring logo-ring-2"></view>
+    </view>
+    <text class="app-name">智慧医疗</text>
+    <text class="app-slogan">守护您的健康生活</text>
+  </view>
+
+  <view class="login-form card">
+    <view class="form-title">用户登录</view>
+
+    <view class="input-group">
+      <view class="input-item">
+        <text class="input-icon">👤</text>
+        <input class="input-field" type="text" placeholder="请输入手机号/用户名" placeholder-class="input-placeholder" value="{{username}}" bindinput="onUsernameInput" />
+      </view>
+
+      <view class="input-item">
+        <text class="input-icon">🔒</text>
+        <input class="input-field" type="{{showPassword ? 'text' : 'password'}}" placeholder="请输入密码" placeholder-class="input-placeholder" value="{{password}}" bindinput="onPasswordInput" />
+        <text class="eye-icon" bindtap="togglePassword">{{showPassword ? '👁️' : '👁️‍🗨️'}}</text>
+      </view>
+    </view>
+
+    <view class="form-options">
+      <view class="remember-me">
+        <checkbox-group bindchange="onRememberChange">
+          <label class="checkbox-label">
+            <checkbox value="remember" checked="{{remember}}" color="#1890ff" />
+            <text>记住我</text>
+          </label>
+        </checkbox-group>
+      </view>
+      <text class="forgot-password" bindtap="forgotPassword">忘记密码？</text>
+    </view>
+
+    <button class="login-btn" bindtap="doLogin">登录</button>
+
+    <view class="register-link">
+      <text>还没有账号？</text>
+      <text class="link" bindtap="goToRegister">立即注册</text>
+    </view>
+  </view>
+
+  <view class="other-login">
+    <view class="divider">
+      <view class="divider-line"></view>
+      <text class="divider-text">其他登录方式</text>
+      <view class="divider-line"></view>
+    </view>
+
+    <view class="third-party">
+      <view class="third-party-btn" bindtap="loginWithWechat">
+        <text class="third-icon">💬</text>
+        <text>微信</text>
+      </view>
+      <view class="third-party-btn" bindtap="loginWithPhone">
+        <text class="third-icon">📱</text>
+        <text>手机验证码</text>
+      </view>
+    </view>
+  </view>
+</view>

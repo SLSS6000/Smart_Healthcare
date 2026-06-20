@@ -1,0 +1,51 @@
+<view class="container">
+  <view class="search-section">
+    <view class="search-box card">
+      <view class="search-input">
+        <text class="search-icon">🔍</text>
+        <input placeholder="搜索药品名称、症状或成分" placeholder-class="search-placeholder" confirm-type="search" bindconfirm="onSearch" />
+        <text class="scan-icon" bindtap="scanCode">📷</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">快速分类</view>
+    <view class="category-grid">
+      <view class="category-item" wx:for="{{categories}}" wx:key="id" bindtap="selectCategory" data-id="{{item.id}}">
+        <view class="category-icon" style="background: {{item.bgColor}}">
+          <text>{{item.icon}}</text>
+        </view>
+        <text class="category-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">我的用药</view>
+    <view class="drug-item" wx:for="{{myDrugs}}" wx:key="id" bindtap="goToDrugDetail" data-id="{{item.id}}">
+      <view class="drug-icon" style="background: {{item.bgColor}}">
+        <text>{{item.icon}}</text>
+      </view>
+      <view class="drug-info">
+        <text class="drug-name">{{item.name}}</text>
+        <text class="drug-spec">{{item.spec}}</text>
+        <text class="drug-usage">{{item.usage}}</text>
+      </view>
+      <view class="drug-reminder">
+        <text class="reminder-text">{{item.reminder}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">常用药品</view>
+    <view class="common-drug-item" wx:for="{{commonDrugs}}" wx:key="id" bindtap="goToDrugDetail" data-id="{{item.id}}">
+      <view class="common-drug-info">
+        <text class="common-drug-name">{{item.name}}</text>
+        <text class="common-drug-desc">{{item.desc}}</text>
+      </view>
+      <text class="common-drug-price">¥{{item.price}}</text>
+    </view>
+  </view>
+</view>

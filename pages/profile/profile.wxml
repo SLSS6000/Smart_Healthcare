@@ -1,0 +1,180 @@
+<scroll-view class="container" scroll-y="{{!showEditModal}}">
+  <view wx:if="{{loading}}" class="main-content">
+    <view class="user-card-new card skeleton" style="height: 380rpx;"></view>
+    <view class="section-title skeleton skeleton-text" style="width: 200rpx; margin-top: 40rpx;"></view>
+    <view class="health-grid">
+      <view class="health-card skeleton" style="height: 180rpx;" wx:for="{{[1,2,3,4]}}" wx:key="*this"></view>
+    </view>
+    <view class="section-header">
+      <view class="section-title skeleton skeleton-text" style="width: 200rpx;"></view>
+    </view>
+    <view class="device-scroll">
+      <view class="device-card-new skeleton" style="height: 220rpx; width: 280rpx;" wx:for="{{[1,2]}}" wx:key="*this"></view>
+    </view>
+  </view>
+  
+  <view wx:elif="{{error}}" class="error">
+    <text class="error-icon">⚠️</text>
+    <text class="error-text">{{error}}</text>
+    <button class="retry-btn" bindtap="loadSettings">重试</button>
+  </view>
+  
+  <view wx:else class="main-content {{showEditModal ? 'blur' : ''}}">
+    <view class="edit-icon-btn top-right" wx:if="{{isLoggedIn}}" catchtap="openEditModal">
+      <text>⚙️</text>
+    </view>
+    <!-- 用户信息卡片 - 升级为玻璃拟态风格 -->
+    <view class="user-card-new card">
+      <view class="user-info-section" bindtap="{{isLoggedIn ? '' : 'goToLogin'}}">
+        <view class="avatar-container">
+          <image src="{{isLoggedIn && userInfo.avatar ? userInfo.avatar : '/images/avatar.png'}}" class="user-avatar-large"></image>
+          <view class="level-badge" wx:if="{{isLoggedIn}}">Lv.5</view>
+        </view>
+        <view class="user-text-info">
+          <view class="name-row">
+            <text class="user-name-large">{{isLoggedIn ? userInfo.nickname : '立即登录'}}</text>
+            <view class="admin-badge" wx:if="{{isAdmin}}">
+              <text class="admin-badge-icon">🛡️</text>
+              <text>系统管理员</text>
+            </view>
+            <text class="greeting-tag" wx:if="{{isLoggedIn && !isAdmin}}">{{greeting}}</text>
+            <view class="verify-badge" wx:if="{{isLoggedIn}}">
+              <text class="verify-check">✓</text>
+            </view>
+          </view>
+          <text class="user-id-text">{{isLoggedIn ? '健康号: ' + userInfo.id : '登录开启智慧健康守护'}}</text>
+        </view>
+      </view>
+
+      <view class="health-stats-grid" wx:if="{{isLoggedIn}}">
+        <view class="stat-box">
+          <text class="stat-num">{{healthSummary.totalRecords || 0}}</text>
+          <text class="stat-desc">健康档案</text>
+        </view>
+        <view class="stat-box score-stat">
+          <view class="score-box">
+            <text class="stat-num highlight">{{healthSummary.healthScore || 0}}</text>
+            <text class="score-unit">分</text>
+          </view>
+          <text class="stat-desc">健康评分</text>
+          <view class="score-progress">
+            <view class="progress-bar" style="width: {{healthSummary.healthScore || 0}}%"></view>
+          </view>
+        </view>
+        <view class="stat-box">
+          <text class="stat-num">{{healthSummary.todaySteps || 0}}</text>
+          <text class="stat-desc">今日步数</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 每日健康贴士 -->
+    <view class="tip-card" wx:if="{{isLoggedIn}}">
+      <text class="tip-icon">💡</text>
+      <view class="tip-content">
+        <text class="tip-title">每日健康贴士</text>
+        <text class="tip-text">{{dailyTip}}</text>
+      </view>
+    </view>
+
+    <!-- 健康打卡 -->
+    <view class="checkin-section" wx:if="{{isLoggedIn}}">
+      <view class="checkin-info">
+        <text class="checkin-title">健康打卡</text>
+        <text class="checkin-desc">坚持打卡，赢取健康积分</text>
+      </view>
+      <view class="checkin-btn" bindtap="handleCheckIn">立即打卡</view>
+    </view>
+
+    <!-- 健康概览 - 升级为卡片组 -->
+    <view class="section-title" wx:if="{{isLoggedIn}}">健康概览</view>
+    <view class="health-grid" wx:if="{{isLoggedIn}}">
+      <view class="health-card" wx:for="{{healthOverviewItems}}" wx:key="label" style="background: {{item.bgColor}}20">
+        <view class="health-card-header">
+          <text class="health-card-icon" style="background: {{item.bgColor}}">{{item.icon}}</text>
+          <text class="health-card-label">{{item.label}}</text>
+        </view>
+        <view class="health-card-value">
+          <text class="val">{{item.value}}</text>
+          <text class="unit">{{item.unit}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 设备管理 -->
+    <view class="section-header" wx:if="{{isLoggedIn && devices.length > 0}}">
+      <text class="section-title">智能设备</text>
+      <text class="section-more">管理设备 ›</text>
+    </view>
+    <view class="device-scroll" wx:if="{{isLoggedIn && devices.length > 0}}">
+      <view class="device-card-new" wx:for="{{devices}}" wx:key="id">
+        <view class="device-header">
+          <view class="device-type-icon">{{item.name === '智能手表' ? '⌚' : '🩺'}}</view>
+          <view class="battery-tag {{item.battery < 20 ? 'low' : ''}}">
+            <text class="battery-icon">⚡</text>{{item.battery}}%
+          </view>
+        </view>
+        <text class="device-name-new">{{item.name}}</text>
+        <text class="device-model-new">{{item.model}}</text>
+        <view class="device-footer">
+          <text class="sync-time">{{item.lastSync}}</text>
+          <view class="sync-indicator {{item.status === 'connected' ? 'online' : ''}}"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 菜单列表 -->
+    <view class="menu-group card" wx:if="{{menuList.length > 0}}">
+      <view class="menu-cell" wx:for="{{menuList}}" wx:key="id" bindtap="handleMenu" data-id="{{item.id}}">
+        <view class="menu-cell-left">
+          <view class="menu-cell-icon" style="background: {{item.bgColor}}15; color: {{item.bgColor}}">
+            <text>{{item.icon}}</text>
+          </view>
+          <text class="menu-cell-name">{{item.name}}</text>
+        </view>
+        <view class="menu-cell-right">
+          <text class="menu-cell-hint" wx:if="{{item.hint}}">{{item.hint}}</text>
+          <text class="menu-arrow-new">›</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="logout-section">
+      <button class="logout-btn-new" bindtap="{{isLoggedIn ? 'logout' : 'goToLogin'}}">
+        {{isLoggedIn ? '退出登录' : '立即登录'}}
+      </button>
+    </view>
+  </view>
+
+  <!-- 编辑资料弹窗 -->
+  <view class="modal-mask" wx:if="{{showEditModal}}" bindtap="closeEditModal"></view>
+  <view class="edit-modal {{showEditModal ? 'show' : ''}}" wx:if="{{showEditModal}}">
+    <view class="modal-header">
+      <text class="modal-title">修改个人资料</text>
+      <text class="modal-close" bindtap="closeEditModal">✕</text>
+    </view>
+    <view class="modal-body">
+      <view class="input-group">
+        <text class="input-label">昵称</text>
+        <input class="modal-input" value="{{tempNickname}}" bindinput="onNicknameInput" placeholder="请输入昵称" />
+      </view>
+      <view class="avatar-select">
+        <text class="input-label">选择头像</text>
+        <view class="avatar-grid">
+          <image 
+            wx:for="{{avatarOptions}}" 
+            wx:key="*this" 
+            src="{{item}}" 
+            class="avatar-option {{tempAvatar === item ? 'selected' : ''}}" 
+            bindtap="selectAvatar" 
+            data-url="{{item}}"
+          ></image>
+        </view>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button class="modal-btn cancel" bindtap="closeEditModal">取消</button>
+      <button class="modal-btn confirm" bindtap="saveProfile">保存修改</button>
+    </view>
+  </view>
+</scroll-view>

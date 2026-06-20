@@ -1,0 +1,28 @@
+<view class="container">
+  <view wx:if="{{news}}" class="news-detail">
+    <view class="news-header">
+      <view class="category">{{news.category}}</view>
+      <text class="time">{{news.time}}</text>
+    </view>
+    
+    <view class="news-title">{{news.title}}</view>
+
+    <image wx:if="{{news.image}}" src="{{news.image}}" class="news-image" mode="aspectFill"></image>
+    
+    <view class="news-meta">
+      <text class="author">健康小助手</text>
+      <view class="stats">
+        <text class="views">👁️ {{news.formattedViews}}</text>
+        <text class="likes">❤️ {{news.formattedLikes}}</text>
+      </view>
+    </view>
+    
+    <view class="news-content">
+      <text>{{news.desc}}</text>
+    </view>
+  </view>
+  
+  <view wx:else class="loading">
+    <text>加载中...</text>
+  </view>
+</view>
